@@ -17,11 +17,10 @@ function setup() {
 
 
 function draw() {
-  background(120);
+  background(0);
   fill(255);
-
-  text( 'hello', mouseX, mouseY );
-  if(games[0] != null) {  
+  
+  if(games != null) {  
     text(games[0].lastUpdate + String.fromCodePoint(games[0].homeTeamEmoji), 10, 30);
   }
 }
