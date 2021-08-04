@@ -20,7 +20,7 @@ function draw() {
   background(120);
   fill(255);
 
-   text( 'hello', 100, 100 );
+  text( 'hello', mouseX, mouseY );
   if(games[0] != null) {  
     text(games[0].lastUpdate + String.fromCodePoint(games[0].homeTeamEmoji), 10, 30);
   }
