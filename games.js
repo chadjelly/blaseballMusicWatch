@@ -1,6 +1,3 @@
-document.getElementById("body").style.margin = "0px 0px 0px 0px";
-
-
 // Customizable Settings
 var gameBoxHeight = 150;
 var infoBoxWidth = 250;
