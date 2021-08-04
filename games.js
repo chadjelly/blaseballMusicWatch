@@ -1,3 +1,6 @@
+let polySynth;
+
+
 // Customizable Settings
 var gameBoxHeight = 150;
 var infoBoxWidth = 250;
@@ -8,13 +11,18 @@ var distBetweenGames = 50;
 var mainBoxesCornerRoundness = 10;
 var mainBoxesBgColor = (20,20,20);
 
-var headerMargin = 50;
+var headerMargin = 100;
+var footerMargin = 100;
+
+var beatTrigger = 0;
+var beatsPerSecond = 2;
+var frame_rate = 30;
 
 
 
 // Global Variable Setup
-var centerWidth = 500;
-var centerHeight = 500;
+var centerWidth;
+var centerHeight;
 var scoreBoxProperties = new Object;
 var infoBoxProperties = new Object;
 var updateBoxProperties = new Object;
@@ -35,27 +43,45 @@ function preload() {
 
 // Setup Canvas & Set Global Variables Values
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, headerMargin + footerMargin + (distBetweenGames*11)+(gameBoxHeight*12) );
   centerWidth = windowWidth/2;
-  centerHeight = windowHeight/2;
+  centerHeight = height/2;
   setBoxProperties();
   
   rectMode(CORNERS);
   textWrap(WORD);
   noStroke();
+  
+  frameRate(30);
+  
+  // Music Stuff
+  polySynth = new p5.PolySynth();
 }
 
 function windowResized() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, headerMargin + footerMargin + (distBetweenGames*11)+(gameBoxHeight*12) );
   centerWidth = windowWidth/2;
-  centerHeight = windowHeight/2;
+  centerHeight = height/2;
   setBoxProperties();
 }
 
 function draw() {
   background(0);
-  fill(255);
   
+  for (let x=0; x < width; x++) {
+    let noiseVal = noise(((cos(frameCount/beatsPerSecond/60)+1)+x+frameCount/2)*0.008, (sin(frameCount/beatsPerSecond/15)+1)*0.2);
+    stroke( noiseVal*200 - 75, (cos(frameCount/60)+1)*25 - 50, (cos(frameCount/120)+1)*100*noiseVal - 50);
+    //line(x, 10+noiseVal*80, x, height);
+    line(x, 0, x, height);
+  }
+  noStroke();
+  
+  var seconds = ((frameCount+frame_rate)/frame_rate) - 1;
+  beatTrigger++;
+  if( beatTrigger >= frame_rate/beatsPerSecond ) {
+    playBeats();
+    beatTrigger = 0;
+  }
   
   for( var i = 0; i < 12; i++ ) {
   fill(mainBoxesBgColor);
@@ -114,7 +140,6 @@ function setGameOrder(gameUpdate) {
   if( gameUpdate[0] != null && gameUpdate[0].lastUpdate == "Play ball!" ) {
     for(var i = 0; i < 12; i++ ) {
       gamesOrder[i] = gameUpdate[i].awayTeam;
-      console.log(gamesOrder[i]);
     }
   }
   else if( gameUpdate[0] != null ) {
@@ -130,4 +155,15 @@ function setGameOrder(gameUpdate) {
   
   return gamesReset;
 }
+
+
+function playBeats() {
+  
+}
+
+
+
+
+
+
 
