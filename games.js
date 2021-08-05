@@ -162,23 +162,24 @@ function setBoxProperties() {
 }
 
 function setGameOrder(gameUpdate) {
-  var gamesReset = gameUpdate;
+  var gamesReset = [];
   
   if( gameUpdate[0] != null && gameUpdate[0].lastUpdate == "Play ball!" ) {
     for(var i = 0; i < 12; i++ ) {
-      gamesOrder[i] = gameUpdate[i].awayTeam;
+      gamesOrder[i] = gameUpdate[i].id;
     }
   }
   else if( gameUpdate[0] != null ) {
     for(var i = 0; i < 12; i++ ) {
       for(var a = 0; a < 12; a++) {
-        if( gameUpdate[a].awayTeam == gamesOrder[i] ) {
-          gamesReset.splice( i, 1, gameUpdate[a] );
-          a = 12;
+        if( gameUpdate[a].id == gamesOrder[i] ) {
+          gamesReset[i] = gameUpdate[a];
         }
       }
     }
   }
+  console.log(gamesOrder);
+  console.log(gamesReset);
   
   return gamesReset;
 }
