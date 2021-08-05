@@ -1,4 +1,5 @@
 let polySynth;
+let mySound;
 
 
 // Customizable Settings
@@ -18,7 +19,7 @@ var beatTrigger = 0;
 var beatsPerSecond = 2;
 var frame_rate = 30;
 
-
+let amp1;
 
 // Global Variable Setup
 var centerWidth;
@@ -39,6 +40,9 @@ function preload() {
       games = setGameOrder( JSON.parse(event.data).value.games.schedule );
     }
   );
+  
+  soundFormats( 'wav' );
+  mySound = loadSound('https://chadjelly.github.io/blaseballMusicWatch/22.%20Overflow.wav');
 }
 
 // Setup Canvas & Set Global Variables Values
@@ -56,6 +60,11 @@ function setup() {
   
   // Music Stuff
   polySynth = new p5.PolySynth();
+  mySound.play();
+  mySound.setLoop(true);
+  amp1 = new p5.Amplitude(0.3);
+  amp1.setInput(mySound);
+  amp1.smooth(true);
 }
 
 function windowResized() {
@@ -105,6 +114,13 @@ function draw() {
       text(games[i].lastUpdate + " " +String.fromCodePoint(games[i].homeTeamEmoji), updateBoxProperties.leftBorderX + 10, updateBoxProperties.upperBorderY + 40 + ((gameBoxHeight+distBetweenGames)*i), updateBoxProperties.width-20);
     }
   }
+  
+  if( games[0] != null ) {
+    textAlign(CENTER,CENTER);
+    textSize(amp1.getLevel()*40 + 30);
+    text( games[0].homeScore, scoreBoxProperties.rightBorderX-30, scoreBoxProperties.upperBorderY+60 );
+  }
+  
 }
 
 function setBoxProperties() {
