@@ -21,6 +21,9 @@ var frame_rate = 30;
 
 let amp1;
 
+var soundOn = false;
+var soundToggleButton;
+
 // Global Variable Setup
 var centerWidth;
 var centerHeight;
@@ -59,19 +62,27 @@ function setup() {
   frameRate(30);
   
   // Music Stuff
+  getAudioContext().suspend();
   polySynth = new p5.PolySynth();
+  mySound.setVolume(0.6);
   mySound.play();
   mySound.setLoop(true);
   amp1 = new p5.Amplitude(0.3);
   amp1.setInput(mySound);
   amp1.smooth(true);
+  
+  soundToggleButton = createButton('Sound: OFF');
+  soundToggleButton.position(centerWidth,40);
+  soundToggleButton.mousePressed(toggleAudio);
+  soundToggleButton.center("horizontal");
 }
 
 function windowResized() {
-  createCanvas(windowWidth, headerMargin + footerMargin + (distBetweenGames*11)+(gameBoxHeight*12) );
+  resizeCanvas(windowWidth, headerMargin + footerMargin + (distBetweenGames*11)+(gameBoxHeight*12) );
   centerWidth = windowWidth/2;
   centerHeight = height/2;
   setBoxProperties();
+  soundToggleButton.center("horizontal");
 }
 
 function draw() {
@@ -172,10 +183,22 @@ function setGameOrder(gameUpdate) {
   return gamesReset;
 }
 
+function toggleAudio() {
+  if(soundOn) {
+    getAudioContext().suspend();
+    soundOn = false;
+    soundToggleButton.html("Sound: OFF");
+  } else {
+    getAudioContext().resume();
+    soundOn = true;
+    soundToggleButton.html("Sound: ON");
+  }
+}
 
 function playBeats() {
   
 }
+
 
 
 
